@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickFund USSD Screens</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #F5C842;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    padding: 48px 32px 64px;
+    min-height: 100vh;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(0,0,0,0.55);
+    margin-bottom: 44px;
+    font-weight: 500;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 48px 36px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .phone-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .screen-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.6);
+    background: rgba(255,255,255,0.4);
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+
+  /* ── PHONE SHELL (matches reference: rounded, dark silver) ── */
+  .iphone {
+    width: 260px;
+    background: #2A2A2C;
+    border-radius: 42px;
+    padding: 12px;
+    box-shadow:
+      0 0 0 1px #555,
+      0 0 0 2.5px #1a1a1a,
+      0 28px 60px rgba(0,0,0,0.55),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+    position: relative;
+  }
+
+  /* notch */
+  .notch {
+    width: 120px;
+    height: 22px;
+    background: #1a1a1a;
+    border-radius: 0 0 16px 16px;
+    margin: 0 auto 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* screen */
+  .screen {
+    background: #1C1C1E;
+    border-radius: 30px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* status bar */
+  .status {
+    background: #1C1C1E;
+    padding: 6px 18px 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .status-left { font-size: 11px; font-weight: 600; color: #fff; }
+  .status-right { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #fff; }
+  .signal {
+    display: flex; gap: 1.5px; align-items: flex-end; height: 10px;
+  }
+  .signal span {
+    width: 3px; background: #fff; border-radius: 1px;
+  }
+  .signal span:nth-child(1) { height: 3px; }
+  .signal span:nth-child(2) { height: 5px; }
+  .signal span:nth-child(3) { height: 7px; }
+  .signal span:nth-child(4) { height: 10px; }
+  .battery {
+    width: 20px; height: 10px; border: 1.5px solid #fff;
+    border-radius: 2px; position: relative; margin-left: 2px;
+  }
+  .battery::after {
+    content: ''; position: absolute;
+    right: -5px; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 5px;
+    background: #fff; border-radius: 0 1px 1px 0;
+  }
+  .battery-fill {
+    position: absolute; left: 2px; top: 2px; bottom: 2px;
+    width: 70%; background: #fff; border-radius: 1px;
+  }
+
+  /* ── USSD DIALOG (the "Reply" popup) ── */
+  .ussd-popup {
+    background: #3A3A3C;
+    margin: 6px 8px;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  /* top bar: Cancel · Reply · Reply */
+  .reply-bar {
+    background: #3A3A3C;
+    border-bottom: 0.5px solid rgba(255,255,255,0.12);
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .reply-bar .cancel { font-size: 14px; color: #4D9FFF; font-weight: 400; }
+  .reply-bar .title  { font-size: 15px; color: #fff; font-weight: 600; }
+  .reply-bar .reply  { font-size: 14px; color: #4D9FFF; font-weight: 600; }
+
+  /* content body */
+  .ussd-content {
+    background: #3A3A3C;
+    padding: 14px 18px 18px;
+    min-height: 130px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #E5E5EA;
+    text-align: center;
+  }
+  .ussd-content .app-name {
+    font-weight: 700; font-size: 15px; color: #fff;
+    display: block; margin-bottom: 4px;
+  }
+  .ussd-content .menu-item {
+    display: block; text-align: left;
+    padding: 1px 0;
+    font-size: 14px;
+  }
+  .ussd-content .section-head {
+    font-weight: 700; font-size: 14px; color: #fff;
+    display: block; margin: 6px 0 2px;
+  }
+  .ussd-content .info-line {
+    color: #98E8C8; font-size: 13px;
+    display: block;
+  }
+  .ussd-content .err-line {
+    color: #FF6B6B; font-size: 13px;
+    display: block;
+  }
+  .ussd-content .muted {
+    color: #8E8E93; font-size: 12px;
+    display: block; margin-top: 4px;
+  }
+  .ussd-content .pin-field {
+    display: block; margin: 10px auto 0;
+    background: rgba(0,0,0,0.35);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 13px; color: #8E8E93;
+    text-align: center; width: 100%;
+  }
+
+  /* text input row */
+  .input-row {
+    background: #2C2C2E;
+    margin: 0 8px 6px;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #8E8E93;
+    min-height: 32px;
+  }
+
+  /* ── KEYBOARD ── */
+  .keyboard {
+    background: #D1D5DB;
+    padding: 6px 4px 4px;
+    border-radius: 0 0 30px 30px;
+  }
+  .kb-row {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 5px;
+  }
+  .key {
+    background: #fff;
+    color: #000;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 0;
+    flex: 1;
+    text-align: center;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.35);
+    min-width: 0;
+  }
+  .key-dark {
+    background: #ADB5BD;
+    color: #000;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 4px;
+    text-align: center;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.35);
+  }
+  .key-space {
+    background: #fff;
+    color: #000;
+    border-radius: 5px;
+    font-size: 11px;
+    padding: 6px 0;
+    flex: 4;
+    text-align: center;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.35);
+  }
+  .kb-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2px;
+    gap: 4px;
+  }
+
+  /* side buttons */
+  .iphone::before {
+    content: '';
+    position: absolute; top: 72px; left: -4px;
+    width: 3px; height: 26px;
+    background: #555; border-radius: 2px 0 0 2px;
+    box-shadow: 0 34px 0 #555, 0 62px 0 #555;
+  }
+  .iphone::after {
+    content: '';
+    position: absolute; top: 96px; right: -4px;
+    width: 3px; height: 48px;
+    background: #555; border-radius: 0 2px 2px 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>QuickFund USSD</h1>
+<div class="subtitle">All Screen Mockups · MTN Rwanda · Dial *182*5*5#</div>
+
+<div class="grid">
+
+  <!-- ① LANGUAGE SELECTION -->
+  <div class="phone-unit">
+    <div class="screen-label">① Language Select</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            Welcome to QuickFund!
+Murakaza neza!
+
+Select Language:
+<span class="menu-item">1. English</span>
+<span class="menu-item">2. Kinyarwanda</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② NEW USER REGISTRATION -->
+  <div class="phone-unit">
+    <div class="screen-label">② Register</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            You are not registered yet.
+
+Register with QuickFund?
+
+<span class="menu-item">1. Yes – Register</span>
+<span class="menu-item">2. No – Exit</span>
+
+<span class="muted">Terms: quickfund.rw/terms</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ ENTER MOMO PIN (Registration) -->
+  <div class="phone-unit">
+    <div class="screen-label">③ Confirm with PIN</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            Terms accepted.
+
+<span class="section-head">Enter MoMo PIN</span>
+to confirm registration
+
+<span class="pin-field">● ● ● ● ● ●</span>
+          </div>
+        </div>
+        <div class="input-row">Enter PIN…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ MAIN MENU -->
+  <div class="phone-unit">
+    <div class="screen-label">④ Main Menu</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            Hello, Jean! Welcome back.
+
+<span class="menu-item">1. Savings</span>
+<span class="menu-item">2. Loans</span>
+<span class="menu-item">3. Compte Bloqué</span>
+<span class="menu-item">4. Top-Up (Overdraft)</span>
+<span class="menu-item">5. Short Report</span>
+<span class="menu-item">6. Exit</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ SAVINGS MENU -->
+  <div class="phone-unit">
+    <div class="screen-label">⑤ Savings Menu</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            Savings
+<span class="info-line">Balance: 45,000 RWF</span>
+
+<span class="menu-item">1. Save Money</span>
+<span class="menu-item">2. Withdraw Money</span>
+<span class="menu-item">3. Check Balance</span>
+<span class="menu-item">0. Back</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑥ SAVE MONEY – ENTER AMOUNT -->
+  <div class="phone-unit">
+    <div class="screen-label">⑥ Save – Enter Amount</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            Save Money
+
+MoMo Balance:
+<span class="info-line">78,500 RWF</span>
+
+<span class="section-head">Enter Amount to Save</span>
+(min: 500 RWF)
+          </div>
+        </div>
+        <div class="input-row">Enter amount in RWF…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑦ SAVE SUCCESS -->
+  <div class="phone-unit">
+    <div class="screen-label">⑦ Save – Success</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            <span class="info-line">✅ Saving Successful!</span>
+
+Amount Saved:
+10,000 RWF
+
+New Savings Balance:
+<span class="info-line">55,000 RWF</span>
+
+Date: 10/03/2026
+
+<span class="menu-item">0. Back to Menu</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑧ LOANS MENU -->
+  <div class="phone-unit">
+    <div class="screen-label">⑧ Loans Menu</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            Loans
+<span class="muted">0.3%/day · Max 30 days</span>
+
+<span class="menu-item">1. Ask for Loan</span>
+<span class="menu-item">2. Pay Loan</span>
+<span class="menu-item">3. Check Loan Limit</span>
+<span class="menu-item">4. Remaining Balance</span>
+<span class="menu-item">0. Back</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑨ LOAN DISBURSED -->
+  <div class="phone-unit">
+    <div class="screen-label">⑨ Loan Approved</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            <span class="info-line">✅ Loan Approved!</span>
+
+Amount: 20,000 RWF
+Interest: 0.3%/day
+Due: 09/04/2026
+
+Total Repayable:
+<span class="info-line">21,800 RWF</span>
+
+Sent to your MoMo.
+
+<span class="menu-item">0. Back</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑩ COMPTE BLOQUÉ -->
+  <div class="phone-unit">
+    <div class="screen-label">⑩ Compte Bloqué</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            Compte Bloqué
+<span class="muted">(Blocked Account)</span>
+
+<span class="menu-item">1. Save Money</span>
+<span class="menu-item">2. Check Balance</span>
+<span class="menu-item">3. Withdraw Funds</span>
+<span class="menu-item">0. Back</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑪ BLOCKED WITHDRAWAL ERROR -->
+  <div class="phone-unit">
+    <div class="screen-label">⑪ Withdrawal Blocked</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            <span class="err-line">❌ Withdrawal Not Allowed</span>
+
+Your funds are locked.
+Unlock Date:
+<span class="err-line">01/06/2026</span>
+
+Locked Amount:
+30,000 RWF
+
+Please wait until
+lock period expires.
+
+<span class="menu-item">0. Back</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑫ TOP-UP MENU -->
+  <div class="phone-unit">
+    <div class="screen-label">⑫ Top-Up / Overdraft</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            Top-Up (Overdraft)
+<span class="info-line">Limit: 30,000 RWF</span>
+
+<span class="menu-item">1. Check Allowed Limit</span>
+<span class="menu-item">2. Check Used Amount</span>
+<span class="menu-item">3. Check Remaining</span>
+<span class="menu-item">4. Pay Overdraft Loan</span>
+<span class="menu-item">0. Back</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑬ SHORT REPORT -->
+  <div class="phone-unit">
+    <div class="screen-label">⑬ Short Report</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content" style="font-size:12px; text-align:left;">
+            <span class="app-name" style="text-align:center;display:block;">Recent Activity</span>
+<span class="info-line">+10,000 Savings  10/03</span>
+<span class="err-line">-20,000 Loan taken 08/03</span>
+<span class="info-line">+5,000  Loan repaid 09/03</span>
+<span style="color:#FFD166;display:block;">~2,500  Top-Up used 07/03</span>
+─────────────────
+<span class="menu-item" style="margin-top:4px;">0. Back to Menu</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑭ EXIT WARNING -->
+  <div class="phone-unit">
+    <div class="screen-label">⑭ Exit Warning</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content">
+            <span class="app-name">QuickFund</span>
+            ⚠️ Exit Service?
+
+Are you sure you want
+to exit QuickFund?
+
+<span class="menu-item">1. Yes – Exit safely</span>
+<span class="menu-item">2. No – Go Back</span>
+
+<span class="muted">PIN required to
+confirm exit.</span>
+          </div>
+        </div>
+        <div class="input-row">Enter a number…</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑮ GOODBYE -->
+  <div class="phone-unit">
+    <div class="screen-label">⑮ Goodbye</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status">
+          <span class="status-left">19:09</span>
+          <div class="status-right">
+            <div class="signal"><span></span><span></span><span></span><span></span></div>
+            <span>MTN 3G</span>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="ussd-popup">
+          <div class="reply-bar">
+            <span class="cancel">Cancel</span>
+            <span class="title">Reply</span>
+            <span class="reply">Reply</span>
+          </div>
+          <div class="ussd-content" style="padding-top:24px;">
+            <span style="font-size:26px;">👋</span>
+
+<span class="info-line" style="font-size:15px;font-weight:700;margin:8px 0 4px;display:block;">Goodbye, Jean!</span>
+
+Thank you for using
+QuickFund.
+
+Your session has been
+closed securely.
+
+<span class="muted">Dial *182*5*5# to return</span>
+          </div>
+        </div>
+        <div class="input-row" style="color:#555;">Session ended</div>
+        <div class="keyboard">
+          <div class="kb-row">
+            <div class="key">Q</div><div class="key">W</div><div class="key">E</div><div class="key">R</div><div class="key">T</div><div class="key">Y</div><div class="key">U</div><div class="key">I</div><div class="key">O</div><div class="key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="key">A</div><div class="key">S</div><div class="key">D</div><div class="key">F</div><div class="key">G</div><div class="key">H</div><div class="key">J</div><div class="key">K</div><div class="key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="key-dark">⇧</div>
+            <div class="key">Z</div><div class="key">X</div><div class="key">C</div><div class="key">V</div><div class="key">B</div><div class="key">N</div><div class="key">M</div>
+            <div class="key-dark">⌫</div>
+          </div>
+          <div class="kb-bottom">
+            <div class="key-dark" style="padding:6px 8px;">123</div>
+            <div class="key-space">space</div>
+            <div class="key-dark" style="padding:6px 8px;">return</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /grid -->
+
+<div style="text-align:center;margin-top:48px;font-size:11px;color:rgba(0,0,0,0.45);font-weight:600;letter-spacing:2px;text-transform:uppercase;">
+  QuickFund · USSD *182*5*5# · MTN Rwanda · All Screens
+</div>
+
+</body>
+</html>
